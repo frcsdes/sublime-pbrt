@@ -1,0 +1,6 @@
+{
+	"working_dir": "$file_path",
+	"cmd": ["pbrt", "$file"],
+	"selector": "text.PBRT",
+	"file_patterns": ["*.pbrt"]
+}

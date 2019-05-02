@@ -1,0 +1,81 @@
+%YAML 1.2
+---
+name: PBRT
+file_extensions: [pbrt]
+scope: text.pbrt
+
+contexts:
+  prototype:
+    - include: comments
+
+  main:
+    - include: keywords
+    - include: numbers
+    - include: strings
+    - include: lists
+
+  comments:
+    - match: '#'
+      scope: punctuation.definition.comment.pbrt
+      push:
+        - meta_scope: comment.line.pbrt
+        - match: $\n?
+          pop: true
+
+  keywords:
+    - match: '\b(Attribute|Object|Transform|World)(Begin|End)\b'
+      scope: keyword.control.pbrt
+    - match: '\b(All|EndTime|StartTime)\b'
+      scope: constant.language.pbrt
+    - match: '\bMakeNamed(Material|Medium)\b'
+      scope: keyword.declaration.pbrt
+    - match: '\b(Accelerator|(Area)?LightSource|Camera|Film|Integrator|Material|PixelFilter|Sampler|Shape|Texture|Transform)\b'
+      scope: keyword.declaration.pbrt
+    - match: '\b(MediumInterface|NamedMaterial|ObjectInstance)\b'
+      scope: variable.function.pbrt
+    - match: '\b(ActiveTransform|CoordinateSystem|CoordSysTransform|TransformTimes)\b'
+      scope: variable.function.pbrt
+    - match: '\b(Cleanup|ConcatTransform|Identity|Include|Init|LookAt|ReverseOrientation|Rotate|Scale|Translate)\b'
+      scope: variable.function.pbrt
+
+  types:
+    - match: '\b(float|integer|bool|point[2-3]?|vector[2-3]?|normal|string|texture|color|rgb|xyz|blackbody|spectrum)\b'
+      scope: storage.type.pbrt
+
+  numbers:
+    - match: '-?\b[0-9.]+\b'
+      scope: constant.numeric.pbrt
+
+  constants:
+    - match: '\b(true|false)\b'
+      scope: constant.language.pbrt
+
+  strings:
+    - match: '"'
+      scope: punctuation.definition.string.begin.pbrt
+      push: inside_string
+
+  inside_string:
+    - meta_include_prototype: false
+    - meta_scope: string.quoted.double.pbrt
+    - match: '"'
+      scope: punctuation.definition.string.end.pbrt
+      pop: true
+    - include: types
+    - include: constants
+    - include: numbers
+
+  lists:
+    - match: '\['
+      scope: punctuation.section.brackets.begin.pbrt
+      push: inside_list
+
+  inside_list:
+    - meta_scope: meta.brackets.pbrt
+    - match: '\]'
+      scope: punctuation.section.brackets.end.pbrt
+      pop: true
+    - include: types
+    - include: constants
+    - include: numbers
+    - include: strings
