@@ -43,7 +43,7 @@ contexts:
       scope: storage.type.pbrt
 
   numbers:
-    - match: '-?\b[0-9.]+\b'
+    - match: '-?([0-9]*\.[0-9]+|[0-9]+)'
       scope: constant.numeric.pbrt
 
   constants:
@@ -63,7 +63,6 @@ contexts:
       pop: true
     - include: types
     - include: constants
-    - include: numbers
 
   lists:
     - match: '\['
